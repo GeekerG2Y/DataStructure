@@ -72,6 +72,22 @@ public abstract class AbstractBinaryTree<E> implements BinaryTree, BinaryTreeInf
         protected boolean isLeaf() {
             return left == null && right == null;
         }
+
+        /**
+         * 判断是否为父节点的左子节点
+         * @return 是否为父节点的左子节点
+         */
+        protected boolean isLeftChild() {
+            return parent != null && this == parent.left;
+        }
+
+        /**
+         * 判断是否为父节点的右子节点
+         * @return 是否为父节点的右子节点
+         */
+        protected boolean isRightChild() {
+            return parent != null && this == parent.right;
+        }
     }
 
     /**

@@ -2,26 +2,24 @@ package org.gzy.tree;
 
 import org.gzy.tree.printer.BinaryTrees;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 /**
  * @author GaoZiYang
  * @since 2021年08月22日 18:36:10
  */
 public class BinarySearchTreeTest {
     public static void main(String[] args) {
+        List<Integer> data = new ArrayList<>();
+        for (int i = 0; i < 1000000; i++) {
+            data.add(new Random().nextInt(1000000));
+        }
+
         BinarySearchTree<Integer> binarySearchTree = new BinarySearchTree<>();
-        binarySearchTree.add(7);
-        binarySearchTree.add(4);
-        binarySearchTree.add(9);
-        binarySearchTree.add(2);
-        binarySearchTree.add(5);
-        binarySearchTree.add(6);
-        binarySearchTree.add(8);
-        binarySearchTree.add(11);
-        binarySearchTree.add(3);
-        binarySearchTree.add(12);
-        binarySearchTree.add(1);
-        BinaryTrees.println(binarySearchTree);
-        binarySearchTree.remove(7);
-        BinaryTrees.println(binarySearchTree);
+        for (int i = 0; i < data.size(); i++) {
+            binarySearchTree.add(data.get(i));
+        }
     }
 }
