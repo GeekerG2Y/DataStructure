@@ -8,18 +8,13 @@ import java.util.Comparator;
  * @since 2021年08月23日 21:45:16
  */
 @SuppressWarnings({"unused"})
-public class AVLTree<E> extends BinarySearchTree<E> implements BinaryTree {
-    /**
-     * 元素比较器
-     */
-    private final Comparator<E> comparator;
-
+public class AVLTree<E> extends BalanceBinarySearchTree<E> implements BinaryTree {
     public AVLTree() {
-        this(null);
+        super();
     }
 
     public AVLTree(Comparator<E> comparator) {
-        this.comparator = comparator;
+        super(comparator);
     }
 
     @Override
@@ -92,59 +87,27 @@ public class AVLTree<E> extends BinarySearchTree<E> implements BinaryTree {
     }
 
     /**
-     * 将节点左旋转
-     * @param node 要旋转的节点
+     * 判断节点是否平衡
+     * <br/>AVL树的节点平衡的条件：平衡因子小于等于1
+     * @param node 要判断的节点
+     * @return 是否平衡
      */
-    private void leftRotate(Node<E> node) {
-        Node<E> p = node.right;
-        // 更新父节点
-        p.parent = node.parent;
-        if (node.isLeftChild()) {
-            node.parent.left = p;
-        } else if (node.isRightChild()){
-            node.parent.right = p;
-        } else {
-            // node为根节点
-            root = p;
-        }
-        node.parent = p;
-        if (p.left != null) {
-            p.left.parent = node;
-        }
+    private boolean isBalanced(Node<E> node) {
+        return Math.abs(((AVLNode<E>) node).balanceFactor()) <= 1;
+    }
 
-        // 更改左右子节点
-        node.right = p.left;
-        p.left = node;
+    @Override
+    protected void leftRotate(Node<E> node) {
+        super.leftRotate(node);
 
         // 更新高度
         updateHeight(node);
         updateHeight(node.parent);
     }
 
-    /**
-     * 将节点右旋转
-     * @param node 要旋转的节点
-     */
-    private void rightRotate(Node<E> node) {
-        Node<E> p = node.left;
-        // 更新父节点
-        p.parent = node.parent;
-        if (node.isLeftChild()) {
-            node.parent.left = p;
-        } else if (node.isRightChild()) {
-            node.parent.right = p;
-        } else {
-            // node为根节点
-            root = p;
-        }
-        node.parent = p;
-        if (p.right != null) {
-            p.right.parent = node;
-        }
-
-        // 更改左右子节点
-        node.left = p.right;
-        p.right = node;
+    @Override
+    protected void rightRotate(Node<E> node) {
+        super.rightRotate(node);
 
         // 更新高度
         updateHeight(node);
@@ -155,20 +118,14 @@ public class AVLTree<E> extends BinarySearchTree<E> implements BinaryTree {
      * 更新某个节点的高度
      * @param node 要更新高度的节点
      */
-    private void updateHeight(Node<E> node) {
-        ((AVLNode<E>) node).updateHeight();
+    protected void updateHeight(AbstractBinaryTree.Node<E> node) {
+        ((AVLTree.AVLNode<E>) node).updateHeight();
     }
 
     /**
-     * 判断节点是否平衡
-     * <br/>AVL树的节点平衡的条件：平衡因子小于等于1
-     * @param node 要判断的节点
-     * @return 是否平衡
+     * 元素节点
+     * @param <E> 元素类型
      */
-    private boolean isBalanced(Node<E> node) {
-        return Math.abs(((AVLNode<E>) node).balanceFactor()) <= 1;
-    }
-
     private static class AVLNode<E> extends Node<E> {
         /**
          * 节点的高度

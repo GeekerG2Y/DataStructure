@@ -10,7 +10,7 @@ import java.util.Comparator;
  * @since 2021年08月21日 18:15:02
  */
 @SuppressWarnings({"unchecked", "unused"})
-public class BinarySearchTree<E> extends AbstractBinaryTree<E> implements BinaryTree {
+public class BinarySearchTree<E> extends AbstractBinaryTree<E> {
     /**
      * 元素比较器
      */
@@ -75,7 +75,7 @@ public class BinarySearchTree<E> extends AbstractBinaryTree<E> implements Binary
      * @param node 添加的节点
      */
     protected void afterAdd(Node<E> node) {
-
+        // 空方法
     }
 
     /**
@@ -106,17 +106,18 @@ public class BinarySearchTree<E> extends AbstractBinaryTree<E> implements Binary
 
         // 节点的度为2
         if (node.left != null && node.right != null) {
-            // 找到前驱节点
-            Node<E> predecessor = predecessor(node);
-            // 使用前驱节点的值来替代原有值
-            node.element = predecessor.element;
-            // 删除前驱节点，因为前驱节点一定是度为0或1的节点，所以可以走下面的删除逻辑
-            node = predecessor;
+            // 找到后继节点
+            Node<E> successor = successor(node);
+            // 使用后继节点的值来替代原有值
+            node.element = successor.element;
+            // 删除后继节点，因为后继节点一定是度为0或1的节点，所以可以走下面的删除逻辑
+            node = successor;
         }
 
         // 节点的度为1或0
         Node<E> replacement = node.left != null ? node.left : node.right;
-        if (replacement != null) { // 节点的度为1
+        if (replacement != null) {
+            // 节点的度为1的情况
             replacement.parent = node.parent;
             // 更改父节点的左右指针
             if (node.isLeftChild()) {
@@ -126,26 +127,29 @@ public class BinarySearchTree<E> extends AbstractBinaryTree<E> implements Binary
             } else {
                 root = replacement;
             }
-            // 下面是度为0的情况
-        } else if (node.parent == null) { // 节点是节点节点并且同时也是根节点，等价于判断：node == root
+
+            afterRemove(replacement);
+        } else if (node.parent == null) {
+            // 节点是叶子节点（即度为0）并且同时也是根节点，等价于判断：node == root
             root = null;
-        } else { // 节点为叶子节点但是有父节点
+        } else {
+            // 节点是叶子节点（即度为0）但是有父节点
             if (node.isLeftChild()) {
                 node.parent.left = null;
             } else {
                 node.parent.right = null;
             }
-        }
 
-        afterRemove(node);
+            afterRemove(node);
+        }
     }
 
     /**
      * 空方法，删除后的操作，待子类来实现
-     * @param node 删除的节点
+     * @param node 删除的节点或者用以取代删除节点的节点
      */
     protected void afterRemove(Node<E> node) {
-
+        // 空方法
     }
 
     /**

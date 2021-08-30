@@ -88,6 +88,34 @@ public abstract class AbstractBinaryTree<E> implements BinaryTree, BinaryTreeInf
         protected boolean isRightChild() {
             return parent != null && this == parent.right;
         }
+
+        /**
+         * 获取兄弟节点
+         * @return 兄弟节点
+         */
+        protected Node<E> sibling() {
+            if (isLeftChild()) {
+                return parent.right;
+            } else if (isRightChild()) {
+                return parent.left;
+            } else {
+                return null;
+            }
+        }
+
+        /**
+         * 获取叔叔节点，即父节点的兄弟节点
+         * @return 叔叔节点
+         */
+        protected Node<E> uncle() {
+            if (parent == null) return null;
+            return parent.sibling();
+        }
+
+        @Override
+        public String toString() {
+            return element.toString();
+        }
     }
 
     /**
@@ -282,6 +310,6 @@ public abstract class AbstractBinaryTree<E> implements BinaryTree, BinaryTreeInf
 
     @Override
     public Object string(Object node) {
-        return ((Node<E>) node).element;
+        return node;
     }
 }
