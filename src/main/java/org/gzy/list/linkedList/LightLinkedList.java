@@ -11,6 +11,7 @@ import java.util.Iterator;
  * @author GaoZiYang
  * @since 2021年07月14日 16:22:14
  */
+@SuppressWarnings("unchecked")
 public class LightLinkedList<E> extends AbstractLightList<E> implements ILightList<E>, Cloneable, Serializable {
     /**
      * 头节点
@@ -42,8 +43,8 @@ public class LightLinkedList<E> extends AbstractLightList<E> implements ILightLi
          */
         private Node<E> next;
 
-        public Node(E element, Node<E> prev, Node<E> next) {
-            this.element = element;
+        public Node(E e, Node<E> prev, Node<E> next) {
+            this.element = e;
             this.prev = prev;
             this.next = next;
         }
@@ -75,7 +76,7 @@ public class LightLinkedList<E> extends AbstractLightList<E> implements ILightLi
      * @param <E> 元素类型
      */
     private class LightLinkedListIterator<E> implements Iterator<E> {
-        private int cursor = 0;
+        private final int cursor = 0;
 
         @Override
         public boolean hasNext() {
@@ -99,18 +100,18 @@ public class LightLinkedList<E> extends AbstractLightList<E> implements ILightLi
     }
 
     @Override
-    public int indexOf(Object o) {
+    public int indexOf(E e) {
         if (head == null) return -1;
 
         Node<E> node = head;
-        if (o == null) {
+        if (e == null) {
             for (int i = 0; i < size; i++) {
                 if (node.element == null) return i;
                 node = node.next;
             }
         } else {
             for (int i = 0; i < size; i++) {
-                if (node.element.equals(o)) return i;
+                if (node.element.equals(e)) return i;
                 node = node.next;
             }
         }
@@ -118,18 +119,18 @@ public class LightLinkedList<E> extends AbstractLightList<E> implements ILightLi
     }
 
     @Override
-    public int lastIndexOf(Object o) {
+    public int lastIndexOf(E e) {
         if (tail == null) return -1;
 
         Node<E> node = tail;
-        if (o == null) {
+        if (e == null) {
             for (int i = size; i > 0; i--) {
                 if (node.element == null) return i;
                 node = node.prev;
             }
         } else {
             for (int i = size; i > 0; i--) {
-                if (node.element.equals(o)) return i - 1;
+                if (e.equals(node.element)) return i - 1;
                 node = node.prev;
             }
         }
@@ -150,19 +151,19 @@ public class LightLinkedList<E> extends AbstractLightList<E> implements ILightLi
     }
 
     @Override
-    public E set(int index, E element) {
+    public E set(int index, E e) {
         rangeCheck(index);
         Node<E> node = node(index);
         E oldElement = node.element;
-        node.element = element;
+        node.element = e;
         return oldElement;
     }
 
     @Override
-    public void add(int index, E element) {
+    public void add(int index, E e) {
         rangeCheckForAdd(index);
         if (index == size) {
-            Node<E> newNode = new Node<>(element, tail, null);
+            Node<E> newNode = new Node<>(e, tail, null);
             if (tail == null) {
                 head = newNode;
             } else {
@@ -172,7 +173,7 @@ public class LightLinkedList<E> extends AbstractLightList<E> implements ILightLi
         } else {
             Node<E> oldNode = node(index);
             Node<E> prevNode = oldNode.prev;
-            Node<E> newNode = new Node<>(element, prevNode, oldNode);
+            Node<E> newNode = new Node<>(e, prevNode, oldNode);
             oldNode.prev = newNode;
             if (prevNode == null) {
                 head = newNode;

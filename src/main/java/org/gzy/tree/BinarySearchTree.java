@@ -42,10 +42,10 @@ public class BinarySearchTree<E> extends AbstractBinaryTree<E> {
 
         // 添加非第一个元素
         Node<E> node = root;
-        Node<E> parent = null;
+        Node<E> parent;
         int cmp = 0;
         // 寻找插入元素的父节点
-        while (node != null) {
+        do {
             cmp = compare(e, node.element);
             parent = node;
             if (cmp > 0) {
@@ -57,7 +57,7 @@ public class BinarySearchTree<E> extends AbstractBinaryTree<E> {
                 node.element = e;
                 return;
             }
-        }
+        } while (node != null);
 
         Node<E> newNode = createNode(e, parent);
         if (cmp > 0) {

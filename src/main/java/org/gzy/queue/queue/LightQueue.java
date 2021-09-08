@@ -7,12 +7,15 @@ import org.gzy.queue.ILightQueue;
 import java.io.Serializable;
 
 /**
- * 队列
+ * 基于List集合实现的队列
  * @author GaoZiYang
  * @since 2021年07月18日 13:48:56
  */
 public class LightQueue<E> implements ILightQueue<E>, Cloneable, Serializable {
-    private ILightList<E> lightList = new LightLinkedList<>();
+    /**
+     * 存储队列元素
+     */
+    private final ILightList<E> lightList = new LightLinkedList<>();
 
     @Override
     public int size() {
@@ -52,12 +55,12 @@ public class LightQueue<E> implements ILightQueue<E>, Cloneable, Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("队尾 [");
+        sb.append("Tail [");
         for (int i = 0; i < lightList.size(); i++) {
             if (i != 0) sb.append(",");
             sb.append(lightList.get(i));
         }
-        sb.append("] 队头");
+        sb.append("] Head");
         return sb.toString();
     }
 }

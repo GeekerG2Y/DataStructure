@@ -3,6 +3,8 @@ package org.gzy.tree;
 import org.gzy.queue.queue.LightQueue;
 import org.gzy.tree.printer.BinaryTreeInfo;
 
+import java.util.function.Consumer;
+
 /**
  * 二叉树的抽象类
  * @author GaoZiYang
@@ -183,7 +185,7 @@ public abstract class AbstractBinaryTree<E> implements BinaryTree, BinaryTreeInf
         }
 
         // 从父节点中寻找前驱节点
-        while (node.parent != null && node == node.parent.left) {
+        while (node.isLeftChild()) {
             node = node.parent;
         }
         return node.parent;
@@ -206,7 +208,7 @@ public abstract class AbstractBinaryTree<E> implements BinaryTree, BinaryTreeInf
         }
 
         // 从父节点中寻找后继节点
-        while (node.parent != null && node == node.parent.right) {
+        while (node.isRightChild()) {
             node = node.parent;
         }
         return node.parent;
@@ -216,80 +218,79 @@ public abstract class AbstractBinaryTree<E> implements BinaryTree, BinaryTreeInf
     /**
      * 前序遍历
      */
-    public void preorderTraversal(Handler<Node<E>> handler) {
-        if (handler == null) {
+    public void preorderTraversal(Consumer<E> consumer) {
+        if (consumer == null) {
             throw new IllegalArgumentException("遍历处理器不能为空！");
         }
-        preorderTraversal(root, handler);
+        preorderTraversal(root, consumer);
     }
 
-    private void preorderTraversal(Node<E> node, Handler<Node<E>> handler) {
+    private void preorderTraversal(Node<E> node, Consumer<E> consumer) {
         if (node == null) return;
 
-        handler.handle(node);
-        preorderTraversal(node.left, handler);
-        preorderTraversal(node.right, handler);
+        consumer.accept(node.element);
+        preorderTraversal(node.left, consumer);
+        preorderTraversal(node.right, consumer);
     }
 
     /**
      * 中序遍历
      */
-    public void inorderTraversal(Handler<Node<E>> handler) {
-        if (handler == null) {
+    public void inorderTraversal(Consumer<E> consumer) {
+        if (consumer == null) {
             throw new IllegalArgumentException("遍历处理器不能为空！");
         }
-        inorderTraversal(root, handler);
+        inorderTraversal(root, consumer);
     }
 
-    private void inorderTraversal(Node<E> node, Handler<Node<E>> handler) {
+    private void inorderTraversal(Node<E> node, Consumer<E> consumer) {
         if (node == null) return;
 
-        inorderTraversal(node.left, handler);
-        handler.handle(node);
-        inorderTraversal(node.right, handler);
+        inorderTraversal(node.left, consumer);
+        consumer.accept(node.element);
+        inorderTraversal(node.right, consumer);
     }
 
     /**
      * 后序遍历
      */
-    public void postorderTraversal(Handler<Node<E>> handler) {
-        if (handler == null) {
+    public void postorderTraversal(Consumer<E> consumer) {
+        if (consumer == null) {
             throw new IllegalArgumentException("遍历处理器不能为空！");
         }
-        postorderTraversal(root, handler);
+        postorderTraversal(root, consumer);
     }
 
-    private void postorderTraversal(Node<E> node, Handler<Node<E>> handler) {
+    private void postorderTraversal(Node<E> node, Consumer<E> consumer) {
         if (node == null) return;
 
-        postorderTraversal(node.left, handler);
-        postorderTraversal(node.right, handler);
-        handler.handle(node);
+        postorderTraversal(node.left, consumer);
+        postorderTraversal(node.right, consumer);
+        consumer.accept(node.element);
     }
 
     /**
      * 层序遍历
      */
-    public void levelOrderTraversal(Handler<Node<E>> handler) {
-        if (handler == null) {
+    public void levelOrderTraversal(Consumer<E> consumer) {
+        if (consumer == null) {
             throw new IllegalArgumentException("遍历处理器不能为空！");
         }
         if (root == null) return;
 
-        LightQueue<Node<E>> lightQueue = new LightQueue<>();
-        lightQueue.offer(root);
+        LightQueue<Node<E>> queue = new LightQueue<>();
+        queue.offer(root);
 
-        while (!lightQueue.isEmpty()) {
-            Node<E> head = lightQueue.poll();
-            Node<E> left = head.left;
-            Node<E> right = head.right;
+        while (!queue.isEmpty()) {
+            Node<E> head = queue.poll();
+            Node<E> left = head.left, right = head.right;
             if (left != null) {
-                lightQueue.offer(left);
+                queue.offer(left);
             }
             if (right != null) {
-                lightQueue.offer(right);
+                queue.offer(right);
             }
-            handler.handle(head);
+            consumer.accept(head.element);
         }
     }
 

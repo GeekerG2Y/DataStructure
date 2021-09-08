@@ -23,8 +23,8 @@ public abstract class AbstractLightList<E> implements ILightList<E> {
     }
 
     @Override
-    public boolean contains(Object o) {
-        return indexOf(o) != -1;
+    public boolean contains(E e) {
+        return indexOf(e) != -1;
     }
 
     @Override
@@ -33,8 +33,8 @@ public abstract class AbstractLightList<E> implements ILightList<E> {
     }
 
     @Override
-    public boolean remove(Object o) {
-        int index = indexOf(o);
+    public boolean remove(E e) {
+        int index = indexOf(e);
         if (index == -1) return false;
         remove(index);
         return true;

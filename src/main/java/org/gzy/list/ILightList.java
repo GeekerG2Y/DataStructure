@@ -22,10 +22,10 @@ public interface ILightList<E> {
 
     /**
      * 判断集合中是否包含某个元素
-     * @param o 要判断的元素
+     * @param e 要判断的元素
      * @return 如果包含就返回true，否则返回false
      */
-    boolean contains(Object o);
+    boolean contains(E e);
 
     /**
      * 获取迭代器
@@ -41,24 +41,24 @@ public interface ILightList<E> {
 
     /**
      * 移除某个元素
-     * @param o 要移除的元素
+     * @param e 要移除的元素
      * @return 如果移除成功就返回true，否则返回false
      */
-    boolean remove(Object o);
+    boolean remove(E e);
 
     /**
      * 获取集合中指定元素第一次出现时的索引
-     * @param o 要搜索的元素
+     * @param e 要搜索的元素
      * @return 第一次出现时的索引
      */
-    int indexOf(Object o);
+    int indexOf(E e);
 
     /**
      * 获取集合中指定元素最后一次出现时的索引
-     * @param o 要搜索的元素
+     * @param e 要搜索的元素
      * @return 最后一次出现时的索引
      */
-    int lastIndexOf(Object o);
+    int lastIndexOf(E e);
 
     /**
      * 清空集合
@@ -75,17 +75,17 @@ public interface ILightList<E> {
     /**
      * 设置集合中指定索引上的元素
      * @param index 要设置的索引
-     * @param element 新元素
+     * @param e 新元素
      * @return 旧元素
      */
-    E set(int index, E element);
+    E set(int index, E e);
 
     /**
      * 在集合中指定索引上添加元素，可以添加null
      * @param index 要添加元素的索引
-     * @param element 新添加的元素
+     * @param e 新添加的元素
      */
-    void add(int index, E element);
+    void add(int index, E e);
 
     /**
      * 移除集合中指定索引上的元素
