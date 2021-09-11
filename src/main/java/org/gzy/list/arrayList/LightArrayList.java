@@ -14,14 +14,14 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class LightArrayList<E> extends AbstractLightList<E> implements ILightList<E>, RandomAccess, Cloneable, Serializable {
     /**
-     * 默认容量为10
-     */
-    private static final int DEFAULT_CAPACITY = 10;
-
-    /**
      * 元素数组
      */
     private E[] elements;
+
+    /**
+     * 默认容量为10
+     */
+    private static final int DEFAULT_CAPACITY = 10;
 
     public LightArrayList() {
         this(DEFAULT_CAPACITY);
@@ -62,9 +62,7 @@ public class LightArrayList<E> extends AbstractLightList<E> implements ILightLis
 
     @Override
     public void clear() {
-        for (int i = 0; i < size; i++) {
-            elements[i] = null;
-        }
+        Arrays.fill(elements, null);
         size = 0;
     }
 
