@@ -1,7 +1,5 @@
 package org.gzy.tree;
 
-import org.gzy.queue.queue.LightQueue;
-
 import java.util.Comparator;
 
 /**
